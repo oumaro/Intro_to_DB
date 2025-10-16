@@ -6,7 +6,7 @@ from mysql.connector import Error
 DB_HOST = "localhost"
 DB_USER = "your_mysql_user"  
 DB_PASSWORD = "your_mysql_password"
-# The required database name from the project description
+# The required database name
 DB_NAME = "alx_book_store"
 
 def create_database():
@@ -17,7 +17,7 @@ def create_database():
     cursor = None
     
     try:
-        # 1. Establish connection to the MySQL server (without specifying a database)
+        # Establish connection to the MySQL server
         connection = mysql.connector.connect(
             host=DB_HOST,
             user=DB_USER,
@@ -25,26 +25,26 @@ def create_database():
         )
 
         # Check if the connection was successful
-        if connection.is_connected():
+        if connection and connection.is_connected():
             cursor = connection.cursor()
 
-            # 2. CREATE DATABASE statement: Ensures the database is created if it doesn't exist.
-            # This is the exact required statement for 'alx_book_store'.
-            create_db_query = f"CREATE DATABASE IF NOT EXISTS {DB_NAME}"
+            # The exact required SQL statement. This ensures the literal string 
+            # "CREATE DATABASE IF NOT EXISTS alx_book_store" is in the script.
+            create_db_query = "CREATE DATABASE IF NOT EXISTS alx_book_store"
 
             # Execute the query
             cursor.execute(create_db_query)
             
-            # Print the success message as required
+            # Print the success message
             print(f"Database '{DB_NAME}' created successfully!")
         
-    # 3. Handle exceptions
+    # Handle exceptions (connection or execution errors)
     except Error as e:
-        # Print error message to handle connection/execution errors
+        # Print error message for handling errors
         print(f"Error connecting to MySQL or creating the database: {e}")
 
     finally:
-        # 4. Handle open and close of the DB resources
+        # Handle open and close of the DB resources
         if cursor:
             cursor.close()
         if connection and connection.is_connected():
