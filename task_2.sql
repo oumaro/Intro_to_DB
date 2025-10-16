@@ -4,6 +4,7 @@ USE alx_book_store;
 -- -------------------------------------------------------------------
 -- 1. Table: Authors
 -- Stores information about authors.
+-- Contains AUTHOR_ID (PK) and AUTHOR_NAME.
 -- -------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS Authors (
     AUTHOR_ID INT PRIMARY KEY,
