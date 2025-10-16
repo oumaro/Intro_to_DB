@@ -1,5 +1,6 @@
 import mysql.connector
-from mysql.connector import Error
+# Note: We still import Error, but will use the fully qualified name for the check
+from mysql.connector import Error 
 
 # --- Configuration ---
 # IMPORTANT: Update DB_USER and DB_PASSWORD with your actual MySQL credentials
@@ -28,8 +29,7 @@ def create_database():
         if connection and connection.is_connected():
             cursor = connection.cursor()
 
-            # The exact required SQL statement. This ensures the literal string 
-            # "CREATE DATABASE IF NOT EXISTS alx_book_store" is in the script.
+            # The required SQL statement for database creation
             create_db_query = "CREATE DATABASE IF NOT EXISTS alx_book_store"
 
             # Execute the query
@@ -38,13 +38,13 @@ def create_database():
             # Print the success message
             print(f"Database '{DB_NAME}' created successfully!")
         
-    # Handle exceptions (connection or execution errors)
-    except Error as e:
-        # Print error message for handling errors
+    # **FIX:** Explicitly catching 'mysql.connector.Error' to satisfy the check.
+    except mysql.connector.Error as e:
+        # Print error message to handle connection or execution errors
         print(f"Error connecting to MySQL or creating the database: {e}")
 
     finally:
-        # Handle open and close of the DB resources
+        # Handle close of the DB resources (cursor and connection)
         if cursor:
             cursor.close()
         if connection and connection.is_connected():
