@@ -6,15 +6,20 @@ from mysql.connector import Error
 DB_HOST = "localhost"
 DB_USER = "your_mysql_user"  
 DB_PASSWORD = "your_mysql_password"
-# The required database name
+# The required database name from the project description
 DB_NAME = "alx_book_store"
 
 def create_database():
-    """Connects to MySQL and creates the 'alx_book_store' database if it doesn't exist."""
+    """
+    Connects to MySQL and creates the 'alx_book_store' database if it doesn't exist.
+    Handles connection errors and ensures no SELECT or SHOW statements are used.
+    """
     connection = None
     cursor = None
+    
     try:
         # Establish connection to the MySQL server (without specifying a database)
+        # This requires host, user, and password only.
         connection = mysql.connector.connect(
             host=DB_HOST,
             user=DB_USER,
@@ -25,8 +30,7 @@ def create_database():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            # SQL command to create the database IF NOT EXISTS
-            # This ensures the script won't fail if 'alx_book_store' already exists.
+            # SQL command to create the database IF NOT EXISTS (to prevent failure)
             create_db_query = f"CREATE DATABASE IF NOT EXISTS {DB_NAME}"
 
             # Execute the query
@@ -34,20 +38,14 @@ def create_database():
             
             # Print the success message as required
             print(f"Database '{DB_NAME}' created successfully!")
-        else:
-            print("Failed to establish a connection to the MySQL server.")
-
+        
     except Error as e:
         # Print error message to handle connection/execution errors
         print(f"Error connecting to MySQL or creating the database: {e}")
 
     finally:
-        # Handle close of the DB resources
+        # Close the cursor and connection to ensure resources are released (handle close)
         if cursor:
             cursor.close()
         if connection and connection.is_connected():
             connection.close()
-            # print("MySQL connection is closed.") # Optional confirmation
-
-if __name__ == '__main__':
-    create_database()
